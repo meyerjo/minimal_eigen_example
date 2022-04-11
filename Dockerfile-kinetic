@@ -2,18 +2,20 @@ FROM osrf/ros:kinetic-desktop-full AS base1604
 RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
 
 RUN apt-get update && apt-get install -y gcc g++
-#
-#RUN mkdir /usr/lib/eigen
-#COPY eigen-3.3.7/ /usr/lib/eigen/
+
+RUN mkdir /usr/lib/eigen
+COPY eigen-3.4.0/ /usr/lib/eigen/
 
 WORKDIR /code_1604
 COPY my_program.cpp .
 
-RUN g++ -O0 -I /usr/include/eigen3/ my_program.cpp -o program_1604_o0
-RUN g++ -O1 -I /usr/include/eigen3/ my_program.cpp -o program_1604_o1
-RUN g++ -O2 -I /usr/include/eigen3/ my_program.cpp -o program_1604_o2
-RUN g++ -O3 -I /usr/include/eigen3/ my_program.cpp -o program_1604_o3
-RUN g++ -Os -I /usr/include/eigen3/ my_program.cpp -o program_1604_os
-RUN g++ -Ofast -I /usr/include/eigen3/ my_program.cpp -o program_1604_ofast
+ENV EIGEN_DIR=/usr/lib/eigen/
+
+RUN g++ -O0 -I $EIGEN_DIR my_program.cpp -o program_1604_o0
+RUN g++ -O1 -I $EIGEN_DIR my_program.cpp -o program_1604_o1
+RUN g++ -O2 -I $EIGEN_DIR my_program.cpp -o program_1604_o2
+RUN g++ -O3 -I $EIGEN_DIR my_program.cpp -o program_1604_o3
+RUN g++ -Os -I $EIGEN_DIR/ my_program.cpp -o program_1604_os
+RUN g++ -Ofast -I $EIGEN_DIR my_program.cpp -o program_1604_ofast
 
 CMD lsb_release -a && cd /code_1604 && g++ -v && echo "optimization -O0" && ./program_1604_o0  && echo "optimization -O1" && ./program_1604_o1 && echo "optimization -O2" && ./program_1604_o2  && echo "optimization -O3" && ./program_1604_o3 && echo "optimization -Os" && ./program_1604_os && echo "optimization -Ofast" && ./program_1604_ofast

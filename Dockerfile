@@ -3,8 +3,8 @@ RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sud
 
 RUN apt-get update && apt-get install -y gcc g++
 
-RUN mkdir /usr/lib/eigen
-COPY eigen-3.4.0/ /usr/lib/eigen/
+#RUN mkdir /usr/lib/eigen
+#COPY eigen-3.4.0/ /usr/lib/eigen/
 
 WORKDIR /code_2004
 COPY my_program.cpp .

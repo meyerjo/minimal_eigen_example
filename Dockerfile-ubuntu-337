@@ -1,0 +1,21 @@
+FROM ubuntu:20.04
+
+RUN apt-get update && apt-get install -y gcc g++ unzip wget lsb-release
+
+RUN mkdir -p /eigen
+RUN wget -P /eigen https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.zip
+RUN unzip /eigen/eigen-3.3.7.zip -d /eigen/
+
+WORKDIR /code_2004
+COPY my_program.cpp .
+
+ENV EIGEN_DIR=/eigen/eigen-3.3.7/
+
+RUN g++ -O0 -I $EIGEN_DIR my_program.cpp -o program_2004_o0
+RUN g++ -O1 -I $EIGEN_DIR my_program.cpp -o program_2004_o1
+RUN g++ -O2 -I $EIGEN_DIR my_program.cpp -o program_2004_o2
+RUN g++ -O3 -I $EIGEN_DIR my_program.cpp -o program_2004_o3
+RUN g++ -Os -I $EIGEN_DIR my_program.cpp -o program_2004_os
+RUN g++ -Ofast -I $EIGEN_DIR my_program.cpp -o program_2004_ofast
+
+CMD lsb_release -a && cd /code_2004 && g++ -v&& echo "optimization -O0" && ./program_2004_o0  && echo "optimization -O1" && ./program_2004_o1 && echo "optimization -O2" && ./program_2004_o2  && echo "optimization -O3" && ./program_2004_o3 && echo "optimization -Os" && ./program_2004_os && echo "optimization -Ofast" && ./program_2004_ofast

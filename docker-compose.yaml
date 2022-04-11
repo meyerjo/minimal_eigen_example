@@ -11,4 +11,8 @@ services:
   ubuntu2004_eigen340:
     build:
       context: .
-      dockerfile: Dockerfile-noetic-340
+      dockerfile: Dockerfile-ubuntu-340
+  ubuntu2004_eigen337:
+    build:
+      context: .
+      dockerfile: Dockerfile-ubuntu-337

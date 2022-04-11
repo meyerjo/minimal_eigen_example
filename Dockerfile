@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y gcc g++
 WORKDIR /code_2004
 COPY my_program.cpp .
 
-ENV EIGEN_DIR=/usr/lib/eigen/
+ENV EIGEN_DIR=/usr/include/eigen3/
 
 RUN g++ -O0 -I $EIGEN_DIR my_program.cpp -o program_2004_o0
 RUN g++ -O1 -I $EIGEN_DIR my_program.cpp -o program_2004_o1
